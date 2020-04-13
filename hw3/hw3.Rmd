@@ -1,0 +1,126 @@
+---
+title: "Econ 7217 Assignment 3"
+output: 
+  github_document:
+    html_preview: true
+    dev: jpeg
+  html_notebook:
+    theme: spacelab
+    highlight: tango
+---
+
+
+## packages and data
+
+```{r message=FALSE, warning=FALSE}
+library(ergm)
+library(sna)
+library(latentnet)
+library(network)
+
+load('../data/dataset_ergmm.RData')
+
+```
+
+
+## Problem 1
+
+Change the latent position model option from distance model to projection model.
+
+Here, using `bilinear()` instead of `euclidean()` inside `ergmm` function.
+
+
+```{r}
+model_1 <- ergmm(net ~ bilinear(d = 2), 
+                 control=ergmm.control(burnin=100000,sample.size= 10000,interval=5))
+```
+
+### Estimation
+
+The result summary was stated:
+
+```{r message=FALSE}
+summary(model_1)
+```
+
+### Graph
+
+The graphic result:
+
+```{r message=FALSE, warning=FALSE}
+plot(model_1, pie = T, main = 'Projection Model (Inner Product)', print.formula = F)
+```
+
+## Question 2
+
+Instead of using 2 groups, set the cluster-group number to 3.
+
+```{r message=FALSE, warning=FALSE}
+model_2_fomula <- formula(net ~ nodematch("white") + nodematch("male") + euclidean(d=2, G=3))
+
+
+model_2 <- ergmm(model_2_fomula,
+                control=ergmm.control(burnin=100000,sample.size= 10000,interval=5))
+
+```
+
+### Estimation
+
+The result summary shows that the male factpr is significant.
+
+```{r}
+summary(model_2)
+```
+
+### Graph
+
+As the figure shown, there are 3 groups (blocks) denoted by 3 circles with different colors.
+
+```{r warning=FALSE}
+plot(model_2, pie = T, main = "Cluster = 3", print.formula = F)
+```
+
+
+
+## P.S. Comparing to demo code setting
+
+```{r message=FALSE, warning=FALSE}
+model1_fomula <- formula(net ~ euclidean(d=2))
+
+model1 <- ergmm(model1_fomula,
+                control=ergmm.control(burnin=100000,sample.size= 10000,interval=5))
+
+model2_fomula <- formula(net ~ nodematch("white") + nodematch("male") +
+                               euclidean(d=2,G=2))
+model2 <- ergmm(model2_fomula,
+                control=ergmm.control(burnin=100000,sample.size= 10000,interval=5))
+
+
+```
+
+### Model 1
+```{r warning=FALSE}
+par(mfrow=c(1,2))
+plot(model1, pie = T, main = "Distance", vertex.cex = 2.5, print.formula = F)
+plot(model_1, pie = T, main = "Projection",  vertex.cex = 2.5, print.formula = F)
+
+```
+
+### Model 2
+
+There is a problem that although using distance makes |z1 - z2| = |z2 - z1|, 
+which makes the result is invariant through the sign of z.
+
+But as the figure below shown, my question is will the latent variable position of nodes change,
+with only the cluster number is different?
+
+```{r warning=FALSE}
+par(mfrow=c(1,2))
+plot(model2, pie = T, main = "Cluster = 2", vertex.cex = 2.5, print.formula = F)
+plot(model_2, pie = T, main = "Cluster = 3",  vertex.cex = 2.5, print.formula = F)
+
+```
+
+
+
+
