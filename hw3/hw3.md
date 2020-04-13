@@ -58,8 +58,7 @@ summary(model_1)
 
 ### Graph
 
-The graphic
-result:
+The graphic result:
 
 ``` r
 plot(model_1, pie = T, main = 'Projection Model (Inner Product)', print.formula = F)
@@ -69,8 +68,7 @@ plot(model_1, pie = T, main = 'Projection Model (Inner Product)', print.formula 
 
 ## Question 2
 
-Instead of using 2 groups, set the cluster-group number to
-3.
+Instead of using 2 groups, set the cluster-group number to 3.
 
 ``` r
 model_2_fomula <- formula(net ~ nodematch("white") + nodematch("male") + euclidean(d=2, G=3))
@@ -156,7 +154,7 @@ plot(model_1, pie = T, main = "Projection",  vertex.cex = 2.5, print.formula = F
 There is a problem that although using distance makes |z1 - z2| = |z2 -
 z1|, which makes the result is invariant through the sign of z.
 
-But as the figure below shown, my question is will the latent variable
+But as the figure shown below, my question is will the latent variable
 position of nodes change, with only the cluster number is different?
 
 ``` r
