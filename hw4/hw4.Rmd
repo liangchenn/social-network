@@ -1,0 +1,76 @@
+---
+title: "Assignment 4"
+author: Liang-Cheng, Chen
+output:
+  pdf_document: default
+  html_notebook:
+    highlight: zenburn
+    theme: united
+  html_document:
+    df_print: paged
+---
+
+
+### Package & Data
+
+Import the `ergm` package and its dataset `florentine`.
+
+```{r message=FALSE}
+library(ergm)
+library(stargazer) # for showing result table
+data(florentine)
+```
+
+data overview
+
+```{r}
+flomarriage
+```
+
+
+
+### Problem 1
+
+Estimate ERGM for flomarriage network data with absolute difference in wealth, #edges, #triangles.
+
+```{r message=FALSE, warning=FALSE}
+model.baseline <- ergm(flomarriage ~ edges + triangle)
+model.1 <- ergm(flomarriage ~ edges + triangle + absdiff("wealth"))
+summary(model.1)
+```
+
+
+### Problem 2
+
+First, count how many 2-stars, 3-stars seperately.
+
+From the result we get there are __47 2-stars__ and __34 3-stars__.
+
+```{r}
+summary(flomarriage ~ kstar(2:3))
+```
+
+Second, estimate the model with `kstar(2:3)`, num of edges.
+
+```{r message=FALSE, warning=FALSE}
+model.2 <- ergm(flomarriage ~ edges + kstar(2:3))
+summary(model.2)
+```
+
+Comparing 2 models,
+
+(1) Model 1 shows that number of edges, difference in family wealth are significant.
+    
+(2) After adding number of 2-stars and 3-stars, the number edges becomes insignificant.
+
+(3) The BIC is smaller in model 1. (The smaller the better.)
+    
+
+```{r message=FALSE, warning=FALSE}
+stargazer(model.baseline, model.1, model.2, type = 'text')
+```
+
+
+
+
+
