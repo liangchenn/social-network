@@ -1,0 +1,61 @@
+---
+title: "Assignment #5"
+output:
+  html_notebook:
+    theme: paper
+    toc : yes
+    toc_float:
+      smooth_scroll: yes
+      collapsed: no
+---
+
+## Problem 1
+
+### 1a.
+Drop the effect of smoke1 similarity and estimate the model again.
+Do this by the function setEffects() using the <<include>> parameter.
+Give the changed effects object and the new answer object new names,
+such as effects1 and ans1, to distinguish them.
+
+```{r}
+res1
+```
+
+
+
+### 1b.
+Change the three effects of alcohol to the single effect
+of alcohol similarity, and estimate again.
+
+
+```{r}
+res2
+```
+
+
+## Problem 2
+
+### 2a.
+Replace the average alter effect by average similarity (avSim)
+or total similarity (totSim) and estimate the model again.
+
+```{r}
+NB_avSim
+```
+
+```{r}
+NB_totSim
+```
+
+
+
+### 2b.
+Add the effect of smoking on drinking and estimate again.
+
+We could find the answer in `Rsiena` manual, using `effFrom` to add smoking effect on drinking.
+
+```{r}
+NB_with_smoke
+```
+
+
